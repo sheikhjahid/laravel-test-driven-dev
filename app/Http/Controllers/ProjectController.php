@@ -15,6 +15,13 @@ class ProjectController extends Controller
 
     }
 
+    public function show(Project $project)
+    {
+    	$project = Project::findOrFail($project->id);
+
+    	return view('projects.show')->with('project', $project);
+    }
+
     public function store(Request $request)
     {
     	// validate

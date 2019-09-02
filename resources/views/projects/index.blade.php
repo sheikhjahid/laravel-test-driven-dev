@@ -10,7 +10,7 @@
                 @foreach($projects as $project)
                 <br>
                 <div class="card">
-                    <div class="card-header">{{$project->title}}</div>
+                    <div class="card-header"><a href="{{ url($project->path()) }}">{{$project->title}}</a></div>
 
                     <div class="card-body">
                         {{$project->description}}

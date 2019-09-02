@@ -9,5 +9,10 @@ class Project extends Model
     // protected $table="projects";
     protected $guarded = [];
 
-    // public $fillable = ['title', 'description'];
+    // public $fillable = ['title', 'description'];\
+
+    public function path()
+    {
+    	return "/project/{$this->id}";
+    }
 }

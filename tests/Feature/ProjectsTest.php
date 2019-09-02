@@ -16,6 +16,10 @@ class ProjectsTest extends TestCase
 
         $this->withoutExceptionHandling();
 
+        $this->actingAs(factory('App\User')->create()); //authentication
+
+        // $owner_id = factory('App\User')->create()->id;
+
         $attributes = [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph
@@ -33,7 +37,7 @@ class ProjectsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $project = factory('App\Models\Project')->create();
+        $project = factory('App\Models\Project')->create(); 
 
         $this->get($project->path())
              ->assertSee($project->title)
@@ -44,6 +48,8 @@ class ProjectsTest extends TestCase
     /** @test **/
     public function a_project_requires_a_title()
     {
+        $this->actingAs(factory('App\User')->create()); // authentication
+
         $attributes = factory('App\Models\Project')->raw(['title' => '']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('title');
@@ -53,8 +59,20 @@ class ProjectsTest extends TestCase
     /** @test **/
     public function a_project_requires_a_description()
     {
+        $this->actingAs(factory('App\User')->create()); //authentication
+
         $attributes = factory('App\Models\Project')->raw(['description' => '']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
     }
+
+    // /** @test **/
+    // public function a_project_requires_an_owner()
+    // {
+    //     // $this->withoutExceptionHandling();
+
+    //     $attributes = factory('App\Models\Project')->raw();
+
+    //     $this->post('/projects', $attributes)->assertRedirect('login');
+    // }
 }

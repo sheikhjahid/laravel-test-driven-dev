@@ -15,9 +15,16 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('owner_id')->unsigned()->nullable();
             $table->string('title', 255)->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
+
+            $table->foreign('owner_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onUpdate('CASCADE')
+                  ->onDelete('CASCADE');
         });
     }
 

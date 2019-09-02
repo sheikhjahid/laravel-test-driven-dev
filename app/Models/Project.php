@@ -9,10 +9,15 @@ class Project extends Model
     // protected $table="projects";
     protected $guarded = [];
 
-    // public $fillable = ['title', 'description'];\
+    public $fillable = ['title', 'description','owner_id'];
 
     public function path()
     {
     	return "/project/{$this->id}";
+    }
+
+    public function owner()
+    {
+    	return $this->hasOne('App\User', 'owner_id', 'id');
     }
 }

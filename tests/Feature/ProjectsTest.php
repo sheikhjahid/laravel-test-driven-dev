@@ -11,7 +11,32 @@ class ProjectsTest extends TestCase
     use WithFaker;
 
     /** @test **/
-    public function a_user_can_create_a_project()
+    public function guests_cant_store_projects()
+    {
+        // $this->withoutExceptionHandling();
+
+        $attributes = factory('App\Models\Project')->raw();
+
+        $this->post('/projects', $attributes)->assertRedirect('login');
+    } 
+
+    /** @test **/
+    public function guests_cant_view_projects()
+    {
+        $this->get('projects')->assertRedirect('login');
+    } 
+
+    /** @test **/
+    public function guests_cant_view_a_single_project()
+    {
+        $project = factory('App\Models\Project')->create();
+
+        $this->get($project->path())->assertRedirect('login');
+    } 
+
+
+    /** @test **/
+    public function only_authenticated_users_can_create_a_project()
     {
 
         $this->withoutExceptionHandling();
@@ -33,15 +58,27 @@ class ProjectsTest extends TestCase
     }
 
     /** @test **/
-    public function a_user_can_view_a_project()
+    public function only_authenticated_users_can_view_a_project()
     {
         $this->withoutExceptionHandling();
 
-        $project = factory('App\Models\Project')->create(); 
+        $user = $this->be(factory('App\User')->create());
+
+        $project = factory('App\Models\Project')->create(['owner_id' => auth()->id()]); 
 
         $this->get($project->path())
              ->assertSee($project->title)
              ->assertSee($project->description);
+    }
+
+    /** @test **/
+    public function authenticated_users_can_view_only_its_projects()
+    {
+        $this->be(factory('App\User')->create());
+        
+        $project = factory('App\Models\Project')->create();
+
+        $this->get($project->path())->assertStatus(403);
     }
 
 
@@ -66,13 +103,5 @@ class ProjectsTest extends TestCase
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
     }
 
-    // /** @test **/
-    // public function a_project_requires_an_owner()
-    // {
-    //     // $this->withoutExceptionHandling();
-
-    //     $attributes = factory('App\Models\Project')->raw();
-
-    //     $this->post('/projects', $attributes)->assertRedirect('login');
-    // }
+    
 }

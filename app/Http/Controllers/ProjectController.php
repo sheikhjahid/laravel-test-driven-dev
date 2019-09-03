@@ -29,6 +29,15 @@ class ProjectController extends Controller
     	return view('projects.show')->with('project', $project);
     }
 
+    public function create()
+    {
+        if(!auth()->user())
+        {
+            return redirect('login');
+        }
+        return view('projects.create');
+    }
+
     public function store(Request $request)
     {
     	// validate

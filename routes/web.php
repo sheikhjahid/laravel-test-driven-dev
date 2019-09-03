@@ -19,7 +19,11 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function()
 {
 	Route::get('/projects', 'ProjectController@index');
+
+	Route::get('/projects/create', 'ProjectController@create');
+
 	Route::post('/projects', 'ProjectController@store');
+	
 	Route::get('/project/{project}', 'ProjectController@show');
 
 	Route::get('/home', 'HomeController@index')->name('home');

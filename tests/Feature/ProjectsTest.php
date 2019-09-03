@@ -11,29 +11,23 @@ class ProjectsTest extends TestCase
     use WithFaker;
 
     /** @test **/
-    public function guests_cant_store_projects()
+    public function guests_cant_control_projects()
     {
         // $this->withoutExceptionHandling();
 
-        $attributes = factory('App\Models\Project')->raw();
 
-        $this->post('/projects', $attributes)->assertRedirect('login');
-    } 
-
-    /** @test **/
-    public function guests_cant_view_projects()
-    {
-        $this->get('projects')->assertRedirect('login');
-    } 
-
-    /** @test **/
-    public function guests_cant_view_a_single_project()
-    {
         $project = factory('App\Models\Project')->create();
 
-        $this->get($project->path())->assertRedirect('login');
-    } 
+        $this->get('/projects/create')->assertRedirect('login');
 
+        $this->post('/projects', $project->toArray())->assertRedirect('login');
+        
+        $this->get('projects')->assertRedirect('login');
+        
+        $this->get($project->path())->assertRedirect('login');
+
+
+    } 
 
     /** @test **/
     public function only_authenticated_users_can_create_a_project()
@@ -43,8 +37,8 @@ class ProjectsTest extends TestCase
 
         $this->actingAs(factory('App\User')->create()); //authentication
 
-        // $owner_id = factory('App\User')->create()->id;
-
+        $this->get('/projects/create')->assertStatus(200); //see a create form
+    
         $attributes = [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph

@@ -9,6 +9,10 @@ class TasksController extends Controller
 {
     public function store(Project $project, Request $request)
     {
-    	return $project->addTask($request->body);
+    	$request->validate(['body' => 'required']);
+
+    	$project->addTasks($request->body);
+
+    	return redirect($project->path());
     }
 }

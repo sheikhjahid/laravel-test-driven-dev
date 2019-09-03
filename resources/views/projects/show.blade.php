@@ -13,18 +13,15 @@
         <div style="color:grey;">{{ str_limit($project->description, 40) }}</div>
         </div>
     </div>  
+    @if($project->tasks->count() > 0)
+    @foreach($project->tasks as $tasks)
     <div style="margin-top:-154px;margin-bottom: 10px; margin-right: 200px" class="card box bg-white shadow">
-        Tasks 1
+        {{ $tasks->body }}
     </div>
-    <div style="margin-bottom: 10px;margin-right: 200px" class="card box bg-white shadow">
-        Tasks 2
-    </div>
-    <div style="margin-bottom: 10px;margin-right: 200px" class="card box bg-white shadow">
-        Tasks 3
-    </div>
-    <div style="margin-right: 200px;margin-bottom: : 30px" class="card box bg-white shadow">
-        Tasks 4
-    </div>
+    @endforeach
+    @else
+    <h2> No Tasks </h2>  
+    @endif
     <div> 
      <h2 style="margin-top:20px"> General Notes </h2>
      <textarea style="display: flex;" class="card-project-description"> Random text </textarea>

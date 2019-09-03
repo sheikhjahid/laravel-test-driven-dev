@@ -17,12 +17,13 @@ class ProjectTest extends TestCase
     	$this->assertEquals('/project/'.$project->id, $project->path());
     }
 
+    /** @test **/
     public function it_has_many_tasks()
     {
     	$project = factory('App\Models\Project')->create();
 
     	$project->addTasks('Test Task');
 
-    	$this->assertCount(1, $project->tasks());
+    	$this->assertCount(1, $project->tasks);
     }
 }

@@ -26,6 +26,8 @@ Route::group(['middleware' => 'auth'], function()
 	
 	Route::get('/project/{project}', 'ProjectController@show');
 
+	Route::post('/project/{project}/tasks', 'TasksController@store');
+
 	Route::get('/home', 'HomeController@index')->name('home');
 });
 

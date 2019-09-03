@@ -35,7 +35,7 @@ class ProjectsTest extends TestCase
 
         $this->withoutExceptionHandling();
 
-        $this->actingAs(factory('App\User')->create()); //authentication
+        $this->signIn(); //authentication
 
         $this->get('/projects/create')->assertStatus(200); //see a create form
     
@@ -56,19 +56,17 @@ class ProjectsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = $this->be(factory('App\User')->create());
+        $user = $this->signIn(); //authentication
 
         $project = factory('App\Models\Project')->create(['owner_id' => auth()->id()]); 
 
-        $this->get($project->path())
-             ->assertSee($project->title)
-             ->assertSee($project->description);
+        $this->get($project->path())->assertStatus(200);
     }
 
     /** @test **/
     public function authenticated_users_can_view_only_its_projects()
     {
-        $this->be(factory('App\User')->create());
+        $this->signIn();
         
         $project = factory('App\Models\Project')->create();
 
@@ -79,7 +77,7 @@ class ProjectsTest extends TestCase
     /** @test **/
     public function a_project_requires_a_title()
     {
-        $this->actingAs(factory('App\User')->create()); // authentication
+        $this->signIn(); //authentication
 
         $attributes = factory('App\Models\Project')->raw(['title' => '']);
 
@@ -90,7 +88,7 @@ class ProjectsTest extends TestCase
     /** @test **/
     public function a_project_requires_a_description()
     {
-        $this->actingAs(factory('App\User')->create()); //authentication
+        $this->signIn(); //authentication
 
         $attributes = factory('App\Models\Project')->raw(['description' => '']);
 

@@ -17,7 +17,7 @@
 
                     <div class="card box bg-white shadow">
                         <a href="{{url($project->path())}}" style="text-decoration: none">
-                        <h3 style="margin-bottom:20px;font-size:normal;border-left: 3px skyblue solid;">{{ $project->title }}</h3></a>
+                        <h3 class="project-title">{{ $project->title }}</h3></a>
                         <div style="color:grey;">{{ str_limit($project->description, 40) }}</div>
                     </div>
                 </div>

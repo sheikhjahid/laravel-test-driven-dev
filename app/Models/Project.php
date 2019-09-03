@@ -20,4 +20,9 @@ class Project extends Model
     {
     	return $this->hasOne('App\User', 'owner_id', 'id');
     }
+
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
+    }
 }

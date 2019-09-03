@@ -3,7 +3,14 @@
   padding: 2rem !important;
   text-align: center;
   background-color: #f1f1f1;
-  border-radius: 1rem;
+  border-radius: 1rem !important;
+}
+.card-project-description
+{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding:10rem !important;
+  background-color: #f1f1f1;
+  border-radius: 1rem !important;
 }
 .column {
   float: right;
@@ -30,4 +37,11 @@ h2
   color:white;
   margin:auto;
   box-shadow: 0 2px 7px 0 skyblue;
+}
+
+.project-title
+{
+    margin-bottom:20px;
+    font-size:normal;
+    border-left: 3px skyblue solid;
 }

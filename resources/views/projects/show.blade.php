@@ -10,7 +10,9 @@
             <div class="box">
                 {{$project->description}}
             </div>
+
         </div>
+         <a href="{{ url('projects') }}">Go Back</a>
     </div>
 </div>
 </div>

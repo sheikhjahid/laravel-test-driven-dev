@@ -18,6 +18,7 @@
 		<br>
 		<div class="Submit">
 			<button type="submit" class="btn btn-primary">Submit</button>
+			<a href="{{ url('projects') }}">Cancel</a>
 		</div>
 	</form>
 

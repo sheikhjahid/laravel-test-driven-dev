@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
+use App\Models\Project;
 class ProjectsTest extends TestCase
 {
     use WithFaker;
@@ -33,7 +33,7 @@ class ProjectsTest extends TestCase
     public function only_authenticated_users_can_create_a_project()
     {
 
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
 
         $this->signIn(); //authentication
 
@@ -41,15 +41,41 @@ class ProjectsTest extends TestCase
     
         $attributes = [
             'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph
+            'description' => $this->faker->sentence,
+            'notes' => $this->faker->paragraph
         ];
 
-        $this->post('/projects', $attributes)->assertRedirect('/projects');
+        $response = $this->post('/projects', $attributes);
+
+        $project = Project::where($attributes)->first();
+
+        $response->assertRedirect($project->path());
 
         $this->assertDatabaseHas('projects', $attributes);
 
-        $this->get('/projects');
+        $this->get($project->path())
+             ->assertSee($attributes['title']);
+            
     }
+
+    /** @test **/
+    public function only_authenticated_users_can_update_a_project()
+    {
+        $this->withoutExceptionHandling();
+        
+        $this->signIn();
+
+        $project = factory('App\Models\Project')->create(['owner_id' => auth()->id()]);
+
+        $this->patch($project->path(),[
+            'notes' => 'Notes Changed'
+        ])->assertRedirect($project->path());
+
+        $this->assertDatabaseHas('projects',[
+            'notes' => 'Notes Changed'
+        ]);
+    }
+
 
     /** @test **/
     public function only_authenticated_users_can_view_a_project()
@@ -71,6 +97,18 @@ class ProjectsTest extends TestCase
         $project = factory('App\Models\Project')->create();
 
         $this->get($project->path())->assertStatus(403);
+    }
+
+    /** @test **/
+    public function authenticated_users_can_update_its_projects()
+    {
+        $this->signIn();
+
+        $project = factory('App\Models\Project')->create();
+
+        $this->patch($project->path(),[
+            'notes' => 'Notes Changed again'
+        ])->assertStatus(403);
     }
 
 

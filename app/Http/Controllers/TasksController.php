@@ -16,6 +16,8 @@ class TasksController extends Controller
     		abort(403);
     	}
 
+        $this->authorize('update', $project);
+
     	$project->addTasks($request->body);
 
     	return redirect($project->path());
@@ -24,10 +26,10 @@ class TasksController extends Controller
     public function update(Project $project, Task $task, Request $request)
     {
 
-    	if(auth()->user()->id != $project->owner_id)
-    	{
-    		abort(403);
-    	}
+        if(auth()->user()->id != $project->owner_id)
+        {
+            abort(403);
+        }
 
     	$request->validate(['body' => 'required']);
 
@@ -36,6 +38,6 @@ class TasksController extends Controller
     		'completed' => $request->has('completed')
     	]);
 
-    	return redirect()->back();
+    	return redirect($project->path());
     }
 }

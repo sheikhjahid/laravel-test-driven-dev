@@ -26,6 +26,9 @@ class ProjectController extends Controller
     		abort(403);
     	}
 
+        // $this->authorize('update', $project);
+
+
     	return view('projects.show')->with('project', $project);
     }
 
@@ -43,7 +46,8 @@ class ProjectController extends Controller
     	// validate
     	$attributes = $request->validate([
     		'title' => 'required|min:2',
-    		'description' => 'required'
+    		'description' => 'required',
+            'notes' => 'min:3'
     	]);
     	// $attributes['owner_id'] = auth()->user()->id;
     	//persist
@@ -52,6 +56,26 @@ class ProjectController extends Controller
     	// Project::create($attributes);
 
     	//redirect
-    	return redirect('/projects');
+    	return redirect($project->path());
+    }
+
+    public function update(Project $project, Request $request)
+    {
+        if(auth()->user()->id != $project->owner_id)
+        {
+            abort(403);
+        }
+
+        $request->validate([
+            'notes' => 'min:3'
+        ]);
+
+        $project->update([
+            'notes' => $request->notes 
+        ]);
+
+
+        return redirect($project->path());
+
     }
 }

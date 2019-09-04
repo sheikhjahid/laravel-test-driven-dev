@@ -76,7 +76,7 @@ class ProjectsTaskTest extends TestCase
 
         $task = factory('App\Task')->create(['body' => 'Meet a teacher','project_id' => $project->id]);
 
-        $this->patch($project->path().'/task/'.$task->id, [
+        $this->patch($task->path(), [
             'body' => 'Meet new teacher updated',
             'completed' => true
         ]);

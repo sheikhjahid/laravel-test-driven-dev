@@ -9,7 +9,7 @@ class Project extends Model
     // protected $table="projects";
     protected $guarded = [];
 
-    public $fillable = ['title', 'description','owner_id'];
+    public $fillable = ['title', 'description','owner_id','notes'];
 
     public function path()
     {

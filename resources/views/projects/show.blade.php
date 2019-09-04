@@ -41,7 +41,12 @@
     </div>
     <div> 
      <h2 style="margin-top:20px"> General Notes </h2>
-     <textarea style="display: flex;" class="card-project-description"> Random text </textarea>
+     <form method="POST" action="{{ url($project->path()) }}">
+      @csrf
+      @method('PATCH')
+     <textarea style="margin-bottom: 20px; padding-left: 20px; width:81%; height:162px" name="notes" class="form-control">{{ $project->notes }}</textarea>
+     <button type="submit" class="btn btn-primary">Save</button>
+    </form>
     </div>
 </div>
 

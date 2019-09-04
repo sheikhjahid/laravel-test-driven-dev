@@ -17,6 +17,7 @@ class CreateTasksTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('project_id')->unsigned()->nullable();
             $table->text('body');
+            $table->boolean('completed')->default(false);
             $table->timestamps();
 
             $table->foreign('project_id')

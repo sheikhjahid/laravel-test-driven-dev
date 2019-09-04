@@ -12,6 +12,26 @@
   background-color: #f1f1f1;
   border-radius: 1rem !important;
 }
+
+.project-card{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 2rem !important;
+  text-align: center;
+  background-color: #f1f1f1;
+  border-radius: 1rem !important;
+}
+
+.task-card{
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 1rem !important;
+  text-align: center;
+  background-color: #f1f1f1;
+  border-radius: 1rem !important;
+  margin-top: 11px;
+  margin-bottom: 20px;
+  margin-right: 200px
+}
+
 .column {
   float: right;
   width: 50%;

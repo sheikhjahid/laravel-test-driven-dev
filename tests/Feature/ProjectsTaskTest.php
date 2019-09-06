@@ -5,10 +5,12 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Setup\ProjectFactory;
 
 class ProjectsTaskTest extends TestCase
 {
 
+    // use RefreshDatabase;
     /** @test **/
     public function a_project_can_have_tasks()
     {   
@@ -81,7 +83,7 @@ class ProjectsTaskTest extends TestCase
             'completed' => true
         ]);
 
-        $this->assertDatabaseHas('tasks',[
+        $this->assertDatabaseMissing('tasks',[
             'body' => 'Meet new teacher updated',
             'completed' => true
         ]);

@@ -9,7 +9,7 @@
     <h2 style="margin-bottom: 20px;"> Tasks</h2>
      <div style="padding-left: 84% !important;">
        <div class="project-card box bg-white">
-        <h2 class="project-title">{{ $project->title }}</h2>
+        <h2 class="project-title"><a style="text-decoration: none;" href="{{ url('/project/'.$project->id.'/edit') }}">{{ $project->title }}</a></h2>
         <div style="color:grey;">{{ str_limit($project->description, 40) }}</div>
         </div>
     </div>  

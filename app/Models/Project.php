@@ -26,6 +26,11 @@ class Project extends Model
         return $this->hasMany('App\Task');
     }
 
+    public function activity()
+    {
+        return $this->hasMany('App\Activity');
+    }
+
     public function addTasks($body)
     {
         $this->tasks()->create(['body' => $body]);

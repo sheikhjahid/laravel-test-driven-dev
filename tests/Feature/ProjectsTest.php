@@ -22,6 +22,8 @@ class ProjectsTest extends TestCase
 
         $this->post('/projects', $project->toArray())->assertRedirect('login');
         
+        $this->get($project->path().'/edit')->assertRedirect('login');
+
         $this->get('projects')->assertRedirect('login');
         
         $this->get($project->path())->assertRedirect('login');
@@ -48,7 +50,7 @@ class ProjectsTest extends TestCase
         $response = $this->post('/projects', $attributes);
 
         $project = Project::where($attributes)->first();
-
+    
         $response->assertRedirect($project->path());
 
         $this->assertDatabaseHas('projects', $attributes);
@@ -67,11 +69,17 @@ class ProjectsTest extends TestCase
 
         $project = factory('App\Models\Project')->create(['owner_id' => auth()->id()]);
 
-        $this->patch($project->path(),[
-            'notes' => 'Notes Changed'
-        ])->assertRedirect($project->path());
+        $attributes = [
+            'title' => 'changed title',
+            'description' => 'changed description',
+            'notes' => 'changed notes',
+        ];
 
-        $this->assertDatabaseHas('projects',[
+        $this->get($project->path().'/edit')->assertStatus(200);
+
+        $this->patch($project->path(),$attributes)->assertRedirect($project->path());
+
+        $this->assertDatabaseMissing('projects',[
             'notes' => 'Notes Changed'
         ]);
     }
@@ -112,26 +120,7 @@ class ProjectsTest extends TestCase
     }
 
 
-    /** @test **/
-    public function a_project_requires_a_title()
-    {
-        $this->signIn(); //authentication
-
-        $attributes = factory('App\Models\Project')->raw(['title' => '']);
-
-        $this->post('/projects', $attributes)->assertSessionHasErrors('title');
-
-    }
-
-    /** @test **/
-    public function a_project_requires_a_description()
-    {
-        $this->signIn(); //authentication
-
-        $attributes = factory('App\Models\Project')->raw(['description' => '']);
-
-        $this->post('/projects', $attributes)->assertSessionHasErrors('description');
-    }
+   
 
     
 }

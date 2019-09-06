@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Http\Requests\ProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -26,8 +27,6 @@ class ProjectController extends Controller
     		abort(403);
     	}
 
-        // $this->authorize('update', $project);
-
 
     	return view('projects.show')->with('project', $project);
     }
@@ -49,14 +48,19 @@ class ProjectController extends Controller
     		'description' => 'required',
             'notes' => 'min:3'
     	]);
-    	// $attributes['owner_id'] = auth()->user()->id;
+    	$attributes['owner_id'] = auth()->user()->id;
     	//persist
     	$project = auth()->user()->projects()->create($attributes);
 
-    	// Project::create($attributes);
+    	Project::create($attributes);
 
     	//redirect
     	return redirect($project->path());
+    }
+
+    public function edit(Project $project)
+    {
+        return view('projects.edit')->with('project',$project);
     }
 
     public function update(Project $project, Request $request)
@@ -67,13 +71,16 @@ class ProjectController extends Controller
         }
 
         $request->validate([
+            'title' => 'required',
+            'description' => 'required',
             'notes' => 'min:3'
         ]);
 
         $project->update([
+            'title' => $request->title,
+            'description' => $request->description,
             'notes' => $request->notes 
         ]);
-
 
         return redirect($project->path());
 
